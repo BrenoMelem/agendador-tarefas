@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 //nome padrão para o pacote de integração com o openFeing(Comunicação Sincrona) de microserviços.
 // Apontar para API que vai trazer os dados do usuario(findByEmail)
 //
-@FeignClient(name= "usuario", url = "${usuario.url")
+@FeignClient(name= "usuario", url = "${usuario.url}")
 
 public interface UsuarioClient {
     @GetMapping("/usuario")
