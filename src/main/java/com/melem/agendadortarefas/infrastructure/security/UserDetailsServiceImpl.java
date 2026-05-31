@@ -1,6 +1,5 @@
 package com.melem.agendadortarefas.infrastructure.security;
 
-
 import com.melem.agendadortarefas.business.dtos.UsuarioDto;
 import com.melem.agendadortarefas.infrastructure.security.client.UsuarioClient;
 import org.springframework.beans.factory.annotation.Autowired;
