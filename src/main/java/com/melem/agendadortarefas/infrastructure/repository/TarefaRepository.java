@@ -11,5 +11,6 @@ import java.util.List;
 public interface TarefaRepository extends MongoRepository <TarefaEntity, String> {
 //Buscar uma lista de tarefas que foi agendada em um periodo de tempo, duas determinadas horas (BETWEEN)
     List<TarefaEntity> findByDataEventoBetween (LocalDateTime dataInicial, LocalDateTime dataFinal);
-    List<TarefaEntity> findByEmailUsuario(String email); //COLOCAR O MESMO NOME DO ATRIBUTO DA ENTITY(DTO) PARA BUSCAR NO D
+    List<TarefaEntity> findByEmailUsuario(String email); //COLOCAR O MESMO NOME DO ATRIBUTO DA ENTITY(DTO) PARA BUSCAR NO DB
+
 }
