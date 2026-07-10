@@ -1,6 +1,6 @@
 package com.melem.agendadortarefas.business.mapper;
 
-import com.melem.agendadortarefas.business.dtos.TarefaDto;
+import com.melem.agendadortarefas.business.dtos.TarefasDtoRecords;
 import com.melem.agendadortarefas.infrastructure.entity.TarefaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -10,6 +10,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface TarefaUpdateConverter {
     //Estamos sinalizando o Target, ou seja. A classe principal, se caso não for passado nenhum na dto. Irá continuar usando o que está na entity.
-    void updateTarefas (TarefaDto dto, @MappingTarget  TarefaEntity entity);
+    void updateTarefas (TarefasDtoRecords dto, @MappingTarget  TarefaEntity entity);
 
 }
