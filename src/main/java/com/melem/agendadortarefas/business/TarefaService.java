@@ -1,6 +1,6 @@
 package com.melem.agendadortarefas.business;
 
-import com.melem.agendadortarefas.business.dtos.TarefaDto;
+import com.melem.agendadortarefas.business.dtos.TarefasDtoRecords;
 import com.melem.agendadortarefas.business.mapper.TarefaConverter;
 import com.melem.agendadortarefas.business.mapper.TarefaUpdateConverter;
 import com.melem.agendadortarefas.infrastructure.entity.TarefaEntity;
@@ -23,24 +23,22 @@ public class TarefaService {
     private final JwtUtil jwtUtil;
     private final TarefaUpdateConverter tarefaUpdateConverter;
 
-    public TarefaDto gravarTarefa(String token, TarefaDto dto) {
+    public TarefasDtoRecords gravarTarefa(String token, TarefasDtoRecords dto) {
         String email = jwtUtil.extractUsername(token.substring(7));
-        dto.setEmailUsuario(email);
-        dto.setDataCriacao(LocalDateTime.now());
-        dto.setStatusNotificacaoEnum(StatusNotificacaoEnum.PENDENTE);
-        TarefaEntity entity = tarefaConverter.paraTarefaEntity(dto);
+        TarefasDtoRecords dtoFinal = new TarefasDtoRecords(null,dto.nomeTarefa(), dto.descricao(), LocalDateTime.now(), dto.dataEvento(), email,null, StatusNotificacaoEnum.PENDENTE);
+        TarefaEntity entity = tarefaConverter.paraTarefaEntity(dtoFinal);
         return tarefaConverter.paraTarefaDto(tarefasRepository.save(entity));
     }
 
-    public List<TarefaDto> buscaTarefasAgendadasPorPeriodo(LocalDateTime dataInicial, LocalDateTime dataFinal) {
-        return tarefaConverter.paraListaTarefaDto(tarefasRepository.findByDataEventoBetweenAndStatusNotificacaoEnum(dataInicial, dataFinal,
+    public List<TarefasDtoRecords> buscaTarefasAgendadasPorPeriodo(LocalDateTime dataInicial, LocalDateTime dataFinal) {
+        return tarefaConverter.paraListaTarefaDtoRecords(tarefasRepository.findByDataEventoBetweenAndStatusNotificacaoEnum(dataInicial, dataFinal,
                StatusNotificacaoEnum.PENDENTE));
     }
 
-    public List<TarefaDto> buscaTarefasPorEmail(String token) {
+    public List<TarefasDtoRecords> buscaTarefasPorEmail(String token) {
         String email = jwtUtil.extractUsername(token.substring(7));
         List<TarefaEntity> listaTarefas = tarefasRepository.findByEmailUsuario(email);
-        return tarefaConverter.paraListaTarefaDto(listaTarefas);
+        return tarefaConverter.paraListaTarefaDtoRecords(listaTarefas);
     }
 
     //Não precisamos plotar o delete no repository, devido o MONGO JÁ TRAZER DENTRO O DELETEBYID, SOMENTE SE FOSSE POR OUTRO ATRIBUTO.
@@ -52,7 +50,7 @@ public class TarefaService {
         }
     }
 
-    public TarefaDto alteraStatus(StatusNotificacaoEnum status, String id) {
+    public TarefasDtoRecords alteraStatus(StatusNotificacaoEnum status, String id) {
         try {
             TarefaEntity tarefaEntity = tarefasRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada" + id));
             tarefaEntity.setStatusNotificacaoEnum(status);
@@ -64,7 +62,7 @@ public class TarefaService {
         }
     }
 
-    public TarefaDto updateTarefa(TarefaDto dto, String id) {
+    public TarefasDtoRecords updateTarefa(TarefasDtoRecords dto, String id) {
         try {
             TarefaEntity tarefaEntity = tarefasRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Tarefa não encontrada" + id));
             tarefaUpdateConverter.updateTarefas(dto, tarefaEntity);
